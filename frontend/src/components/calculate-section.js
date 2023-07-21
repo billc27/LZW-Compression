@@ -5,6 +5,7 @@ export default function CalcSection() {
     const [inputText, setInputText] = useState("");
     const [mode, setMode] = useState("encode");
     const [result, setResult] = useState("");
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState("algorithm1");
 
     return (
         <div className="w-full bg-web-color p-4">
@@ -41,7 +42,9 @@ export default function CalcSection() {
                         <label htmlFor="algorithm" className="mr-2 font-sans text-white">
                             Choose Algorithm:
                         </label>
-                        <select id="algorithm" className="bg-calc-btn-color rounded-sm pl-2 font-sans">
+                        <select id="algorithm" className="bg-calc-btn-color rounded-sm pl-2 font-sans"
+                            onChange={(e) => setSelectedAlgorithm(e.target.value)}
+                        >
                             <option value="algorithm1">LZW Algorithm</option>
                             <option value="algorithm2">ABC Algorithm</option>
                             <option value="algorithm3">DEF Algorithm</option>
@@ -72,29 +75,32 @@ export default function CalcSection() {
                 {/* Calculate Button Section */}
                 <button className="bg-calc-btn-color w-40 h-10 rounded-lg font-bold font-sans hover:bg-gray-200 text-black"
                     onClick={async () => {
-                        let parsedInputText;
-                        if (mode === "decode") {
-                            parsedInputText = inputText.split(" ").map(Number);
-                        } else {
-                            parsedInputText = inputText;
+                        if (selectedAlgorithm === "algorithm1") {
+                            // Perform LZW calculation
+                            let parsedInputText;
+                            if (mode === "decode") {
+                                parsedInputText = inputText.split(" ").map(Number);
+                            } else {
+                                parsedInputText = inputText;
+                            }
+                            const requestBody = JSON.stringify({ text: parsedInputText, mode });
+                            console.log(`Sending request with body:`, requestBody);
+                            const response = await fetch("http://localhost:3001/lzw", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: requestBody,
+                            });
+                            const data = await response.json();
+                            let formattedResult;
+                            if (mode === "encode") {
+                                formattedResult = data.result.join(" ");
+                            } else {
+                                formattedResult = data.result;
+                            }
+                            setResult(formattedResult);
                         }
-                        const requestBody = JSON.stringify({ text: parsedInputText, mode });
-                        console.log(`Sending request with body:`, requestBody);
-                        const response = await fetch("http://localhost:3001/lzw", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: requestBody,
-                        });
-                        const data = await response.json();
-                        let formattedResult;
-                        if (mode === "encode") {
-                            formattedResult = data.result.join(" ");
-                        } else {
-                            formattedResult = data.result;
-                        }
-                        setResult(formattedResult);
                     }}
                 >Calculate</button>
             </div>
