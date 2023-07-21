@@ -1,7 +1,7 @@
 import "../index.css";
 import React, { useState } from "react";
 
-export default function CalcSection() {
+export default function CalcSection(props) {
     const [inputText, setInputText] = useState("");
     const [mode, setMode] = useState("encode");
     const [result, setResult] = useState("");
@@ -101,6 +101,11 @@ export default function CalcSection() {
                                 formattedResult = data.result;
                             }
                             setResult(formattedResult);
+
+                            props.setHistory((prevHistory) => [
+                                ...prevHistory,
+                                { inputText, mode, algorithm: selectedAlgorithm, result: formattedResult },
+                            ]);
                         }
                     }}
                 >Calculate</button>
