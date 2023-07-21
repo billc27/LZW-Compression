@@ -76,6 +76,7 @@ export default function CalcSection() {
                 <button className="bg-calc-btn-color w-40 h-10 rounded-lg font-bold font-sans hover:bg-gray-200 text-black"
                     onClick={async () => {
                         if (selectedAlgorithm === "algorithm1") {
+
                             // Perform LZW calculation
                             let parsedInputText;
                             if (mode === "decode") {
@@ -83,7 +84,7 @@ export default function CalcSection() {
                             } else {
                                 parsedInputText = inputText;
                             }
-                            const requestBody = JSON.stringify({ text: parsedInputText, mode });
+                            const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm });
                             console.log(`Sending request with body:`, requestBody);
                             const response = await fetch("http://localhost:3001/lzw", {
                                 method: "POST",
@@ -95,7 +96,7 @@ export default function CalcSection() {
                             const data = await response.json();
                             let formattedResult;
                             if (mode === "encode") {
-                                formattedResult = data.result.join(" ");
+                                formattedResult = data.result.replace(/,/g, " ");
                             } else {
                                 formattedResult = data.result;
                             }
