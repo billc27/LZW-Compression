@@ -78,6 +78,17 @@ app.post("/saveData", (req, res) => {
   });
 });
 
+// Endpoint to fetch the history data 
+app.get("/history", async (req, res) => {
+  try {
+    const history = await DataModel.find();
+    res.json(history);
+  } catch (error) {
+    console.error("Error fetching history data from MongoDB:", error);
+    res.status(500).json({ error: "Error fetching history data from MongoDB" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
 });
