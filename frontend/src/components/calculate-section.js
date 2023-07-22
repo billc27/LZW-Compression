@@ -107,6 +107,7 @@ export default function CalcSection(props) {
                                 { inputText, mode, algorithm: selectedAlgorithm, result: formattedResult },
                             ]);
                         }
+                        props.triggerFetchHistory();
                     }}
                 >Calculate</button>
             </div>

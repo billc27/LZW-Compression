@@ -5,6 +5,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function HistorySection(props) {
     const [history, setHistory] = useState([]);
+    const { shouldFetchHistory, setShouldFetchHistory } = props;
 
     async function fetchHistory() {
         try {
@@ -21,7 +22,16 @@ export default function HistorySection(props) {
 
     useEffect(() => {
         fetchHistory();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        if (shouldFetchHistory) {
+          fetchHistory();
+          setShouldFetchHistory(false);
+        }
+      }, [shouldFetchHistory, setShouldFetchHistory]);
+
+    
 
     console.log(history);
 
