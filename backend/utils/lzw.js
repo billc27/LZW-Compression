@@ -26,6 +26,7 @@ function encode(text) {
 }
 
 function decode(encodedText) {
+    let tempFirst = encodedText[0];
     let dictSize = 256;
     let dictionary = new Map();
     for (let i = 0; i < dictSize; i++) {
@@ -40,6 +41,7 @@ function decode(encodedText) {
       dictionary.set(dictSize++, characters + entry.charAt(0));
       characters = entry;
     }
+    encodedText.unshift(tempFirst);
     return result;
 }
 

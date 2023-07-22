@@ -5,7 +5,7 @@ export default function CalcSection(props) {
     const [inputText, setInputText] = useState(props.selectedHistoryItem?.inputText || "");
     const [mode, setMode] = useState(props.selectedHistoryItem?.mode || "encode");
     const [result, setResult] = useState(props.selectedHistoryItem?.result || "");
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState(props.selectedHistoryItem?.algorithm || "algorithm1");
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState(props.selectedHistoryItem?.algorithm || "LZW Algorithm");
 
     return (
         <div className="w-full bg-web-color p-4">
@@ -45,7 +45,7 @@ export default function CalcSection(props) {
                         <select id="algorithm" className="bg-calc-btn-color rounded-sm pl-2 font-sans"
                             onChange={(e) => setSelectedAlgorithm(e.target.value)}
                         >
-                            <option value="algorithm1">LZW Algorithm</option>
+                            <option value="LZW Algorithm">LZW Algorithm</option>
                             <option value="algorithm2">ABC Algorithm</option>
                             <option value="algorithm3">DEF Algorithm</option>
                         </select>
@@ -75,7 +75,7 @@ export default function CalcSection(props) {
                 {/* Calculate Button Section */}
                 <button className="bg-calc-btn-color w-40 h-10 rounded-lg font-bold font-sans hover:bg-gray-200 text-black"
                     onClick={async () => {
-                        if (selectedAlgorithm === "algorithm1") {
+                        if (selectedAlgorithm === "LZW Algorithm") {
 
                             // Perform LZW calculation
                             let parsedInputText;
