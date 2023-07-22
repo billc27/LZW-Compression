@@ -1,7 +1,29 @@
 import "../index.css"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function HistorySection(props) {
+    const [history, setHistory] = useState([]);
+
+    async function fetchHistory() {
+        try {
+          const response = await fetch("http://localhost:3001/history");
+          if (!response.ok) {
+            throw new Error(`An error occurred: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setHistory(data);
+        } catch (error) {
+          console.error(error);
+        }
+    }    
+
+    useEffect(() => {
+        fetchHistory();
+      }, []);
+
+    console.log(history);
 
     return (
         <div className="flex flex-col h-screen w-1/5 bg-history-sect-color p-3">
@@ -13,12 +35,22 @@ export default function HistorySection(props) {
                 </p>
             </div>
             <div className="p-3 flex-grow max-h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrolling-touch">
-                {props.history.map((item, index) => (
-                    <div key={index} className="p-7 bg-history-sect-text-color text-white rounded mb-2 font-sans" onClick={() => console.log(item)}>
-                        {item.inputText}
+                {history.map((item, index) => (
+                    <div
+                        key={index}
+                        className="relative p-7 bg-history-sect-text-color hover:bg-calc-btn-color text-white rounded mb-2 font-sans font-semibold "
+                        onClick={() => props.setSelectedHistoryItem(item)}
+                    >
+                        Input : {item.text}
+                        <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-red-500"
+                        />
                     </div>
+                    
                 ))}
             </div>
+            
         </div>
     )
 }

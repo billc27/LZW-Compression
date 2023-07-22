@@ -2,10 +2,10 @@ import "../index.css";
 import React, { useState } from "react";
 
 export default function CalcSection(props) {
-    const [inputText, setInputText] = useState("");
-    const [mode, setMode] = useState("encode");
-    const [result, setResult] = useState("");
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState("algorithm1");
+    const [inputText, setInputText] = useState(props.selectedHistoryItem?.inputText || "");
+    const [mode, setMode] = useState(props.selectedHistoryItem?.mode || "encode");
+    const [result, setResult] = useState(props.selectedHistoryItem?.result || "");
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState(props.selectedHistoryItem?.algorithm || "algorithm1");
 
     return (
         <div className="w-full bg-web-color p-4">
