@@ -75,7 +75,7 @@ export default function CalcSection(props) {
                 {/* Calculate Button Section */}
                 <button className="bg-calc-btn-color w-40 h-10 rounded-lg font-bold font-sans hover:bg-gray-200 text-black"
                     onClick={async () => {
-                        if (selectedAlgorithm === "LZW Algorithm") {
+                        if (selectedAlgorithm === "LZW Algorithm" && inputText !== "") {
 
                             // Perform LZW calculation
                             let parsedInputText;
