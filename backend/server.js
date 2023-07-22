@@ -89,6 +89,19 @@ app.get("/history", async (req, res) => {
   }
 });
 
+app.delete("/history/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(`Deleting history item with id: ${id}`);
+    await DataModel.findByIdAndDelete(id);
+    res.json({ message: "History item deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting history item from MongoDB:", error);
+    res.status(500).json({ error: "Error deleting history item from MongoDB" });
+  }
+});
+
+
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
 });

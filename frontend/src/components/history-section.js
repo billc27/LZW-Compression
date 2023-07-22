@@ -22,7 +22,22 @@ export default function HistorySection(props) {
         } catch (error) {
           console.error(error);
         }
-    }    
+    }
+
+    async function deleteHistoryItem(id) {
+        try {
+          const response = await fetch(`http://localhost:3001/history/${id}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) {
+            throw new Error(`An error occurred: ${response.statusText}`);
+          }
+          setHistory((prevHistory) => prevHistory.filter((item) => item.id !== id));
+        } catch (error) {
+          console.error(error);
+        }
+    }
+      
 
     useEffect(() => {
         fetchHistory();
@@ -65,6 +80,11 @@ export default function HistorySection(props) {
                         <FontAwesomeIcon
                             icon={faTrashAlt}
                             className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-red-500"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                deleteHistoryItem(item._id);
+                                props.triggerFetchHistory();
+                            }}
                         />
                     </div>
                 );

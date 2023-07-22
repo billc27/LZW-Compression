@@ -14,7 +14,7 @@ function App() {
 
     return (
         <div className="flex">         
-            <HistorySection history={history} setSelectedHistoryItem={setSelectedHistoryItem} shouldFetchHistory={shouldFetchHistory} setShouldFetchHistory={setShouldFetchHistory}/>
+            <HistorySection history={history} setSelectedHistoryItem={setSelectedHistoryItem} shouldFetchHistory={shouldFetchHistory} setShouldFetchHistory={setShouldFetchHistory} triggerFetchHistory={triggerFetchHistory}/>
             <CalcSection history={history} setHistory={setHistory} selectedHistoryItem={selectedHistoryItem}  shouldFetchHistory={shouldFetchHistory} setShouldFetchHistory={setShouldFetchHistory} triggerFetchHistory={triggerFetchHistory}/>
         </div>
     );
