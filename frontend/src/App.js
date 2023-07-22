@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import HistorySection from './components/history-section';
 import CalcSection from './components/calculate-section';
 
-
 function App() {
     const [history, setHistory] = useState([]);
     const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
