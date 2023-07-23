@@ -13,11 +13,23 @@ mongoose.connect("mongodb://localhost:27017/LZWWebApp", {
   useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+const mongoUrl = process.env.MONGO_URI || "mongodb://localhost:27017/LZWWebApp";
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(mongoUrl);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
+
+// const db = mongoose.connection;
+// db.on("error", console.error.bind(console, "MongoDB connection error:"));
+// db.once("open", () => {
+//   console.log("Connected to MongoDB");
+// });
 
 // Define a schema for the data to be saved
 const dataSchema = new mongoose.Schema({
@@ -102,6 +114,9 @@ app.delete("/history/:id", async (req, res) => {
 });
 
 const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+
+connectDB().then(() => {
+  app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
+  })
+})
