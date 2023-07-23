@@ -10,10 +10,11 @@ export default function HistorySection(props) {
     const { shouldFetchHistory, setShouldFetchHistory } = props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
 
     async function fetchHistory() {
         try {
-          const response = await fetch("http://localhost:3001/history");
+          const response = await fetch(`${backendUrl}/history`);
           if (!response.ok) {
             throw new Error(`An error occurred: ${response.statusText}`);
           }
@@ -26,7 +27,7 @@ export default function HistorySection(props) {
 
     async function deleteHistoryItem(id) {
         try {
-          const response = await fetch(`http://localhost:3001/history/${id}`, {
+          const response = await fetch(`${backendUrl}/history/${id}`, {
             method: "DELETE",
           });
           if (!response.ok) {

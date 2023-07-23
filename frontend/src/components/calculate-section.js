@@ -7,6 +7,8 @@ export default function CalcSection(props) {
     const [result, setResult] = useState(props.selectedHistoryItem?.result || "");
     const [selectedAlgorithm, setSelectedAlgorithm] = useState(props.selectedHistoryItem?.algorithm || "LZW Algorithm");
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+
     return (
         <div className="w-full bg-web-color p-4">
             <p className="text-center mt-5">
@@ -87,7 +89,7 @@ export default function CalcSection(props) {
                             }
                             const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm });
                             console.log(`Sending request with body:`, requestBody);
-                            const response = await fetch("http://localhost:3001/lzw", {
+                            const response = await fetch(`${backendUrl}/lzw`, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
