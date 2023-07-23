@@ -8,12 +8,12 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to the MongoDB database
-mongoose.connect("mongodb://localhost:27017/LZWWebApp", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-const mongoUrl = process.env.MONGO_URI || "mongodb://localhost:27017/LZWWebApp";
+const mongoUrl = process.env.MONGODB_URI || "mongodb://localhost:27017/LZWWebApp";
 
 const connectDB = async () => {
   try {
