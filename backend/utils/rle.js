@@ -10,7 +10,7 @@ function rleEncode(text) {
         }
     }
     return encodedText;
-  }
+}
   
 function rleDecode(encodedText) {
     let text = "";

@@ -21,7 +21,8 @@ export default function CalcSection(props) {
             <div className="flex flex-col md:flex-row justify-center mt-20">
                 {/* Input Text Section */}
                 <div className="flex flex-col items-start w-full pl-10 pr-5">
-                    <p className="text-left text-white font-semibold font-sans">Your Text</p>
+                    <p className="text-left text-white font-semibold font-sans">Your Text 
+                    </p>
                     <textarea
                         className="w-full p-2 bg-input-box-color border border-gray-300 rounded-sm mt-2 h-80 text-white font-sans"
                         placeholder="Enter text here"
@@ -38,9 +39,10 @@ export default function CalcSection(props) {
                     </div>
                 </div>
             </div>
+            <p className="pl-10 font-sans font-semibold text-white">Notes: Do not input numbers or spaces when you are using RLE + LZW Algorithm!</p>
 
             {/* Choose Algorithm Section */}
-            <div className="flex items-center mt-10 pl-10">
+            <div className="flex items-center mt-9 pl-10">
                         <label htmlFor="algorithm" className="mr-2 font-sans text-white">
                             Choose Algorithm:
                         </label>
