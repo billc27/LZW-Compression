@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const { encode, decode } = require("./utils/lzw");
+const { mtfEncode, mtfDecode } = require("./utils/mtf");
+const { rleEncode, rleDecode } = require("./utils/rle");
 const mongoose = require("mongoose");
 const app = express();
 
@@ -14,8 +16,6 @@ mongoose.connect(mongoUrl, {
   useUnifiedTopology: true,
 });
 
-
-
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(mongoUrl);
@@ -26,17 +26,12 @@ const connectDB = async () => {
   }
 }
 
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "MongoDB connection error:"));
-// db.once("open", () => {
-//   console.log("Connected to MongoDB");
-// });
-
 // Define a schema for the data to be saved
 const dataSchema = new mongoose.Schema({
   text: mongoose.Schema.Types.Mixed,
   mode: String,
   algorithm: String,
+  additional: mongoose.Schema.Types.Mixed,
   result: mongoose.Schema.Types.Mixed,
 });
 
@@ -45,15 +40,24 @@ const DataModel = mongoose.model("Data", dataSchema);
 
 app.post("/lzw", async (req, res) => {
   try {
-    const { text, mode, algorithm } = req.body;
-    console.log(`Received ${mode} request with text:`, text);
-    const result = (mode === "encode" ? encode(text) : decode(text)).toString();
+    let { text, mode, algorithm, additional } = req.body;
+    console.log(`Received ${mode} request with text:`, text, additional);
+
+    let result;
+    if (algorithm === "LZW Algorithm" && (additional === "lzw")) {
+      result = (mode === "encode" ? encode(text) : decode(text)).toString();
+    } else if (algorithm === "MTF and LZW Algorithm" && (additional === "mtf")) {
+      result = (mode === "encode" ? encode(mtfEncode(text)) : mtfDecode(decode(text))).toString();
+    } else if (algorithm === "RLE and LZW Algorithm") {
+      result = (mode === "encode" ? encode(rleEncode(text)) : rleDecode(decode(text))).toString();
+    }
 
     // Save the data to MongoDB
     const inputData = {
       text,
       mode,
       algorithm,
+      additional,
       result,
     };
 
@@ -72,11 +76,12 @@ app.post("/lzw", async (req, res) => {
 });
 
 app.post("/saveData", (req, res) => {
-  const { text, mode, algorithm, result } = req.body;
+  const { text, mode, algorithm, additional, result } = req.body;
   const inputData = {
     text,
     mode,
     algorithm,
+    additional,
     result,
   };
 

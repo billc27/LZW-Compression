@@ -48,8 +48,8 @@ export default function CalcSection(props) {
                             onChange={(e) => setSelectedAlgorithm(e.target.value)}
                         >
                             <option value="LZW Algorithm">LZW Algorithm</option>
-                            <option value="algorithm2">ABC Algorithm</option>
-                            <option value="algorithm3">DEF Algorithm</option>
+                            <option value="MTF and LZW Algorithm">MTF + LZW Algorithm</option>
+                            <option value="RLE and LZW Algorithm">RLE + LZW Algorithm</option>
                         </select>
                     </div>
 
@@ -87,7 +87,7 @@ export default function CalcSection(props) {
                             } else {
                                 parsedInputText = inputText;
                             }
-                            const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm });
+                            const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm, additional: "lzw" });
                             console.log(`Sending request with body:`, requestBody);
                             const response = await fetch(`${backendUrl}/lzw`, {
                                 method: "POST",
@@ -107,7 +107,67 @@ export default function CalcSection(props) {
 
                             props.setHistory((prevHistory) => [
                                 ...prevHistory,
-                                { inputText, mode, algorithm: selectedAlgorithm, result: formattedResult },
+                                { inputText, mode, algorithm: selectedAlgorithm, additional: "lzw", result: formattedResult },
+                            ]);
+                        } else if ((selectedAlgorithm === "MTF and LZW Algorithm" && inputText !== "" && (mode === "encode" || (mode === "decode" && (!/^[a-zA-Z]+$/.test(inputText)))))) {
+                            let parsedInputText;
+                            if (mode === "decode") {
+                                parsedInputText = inputText.split(" ").map(Number);
+                            } else {
+                                parsedInputText = inputText;
+                            }
+                            const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm, additional: "mtf" });
+                            console.log(`Sending request with body:`, requestBody);
+                            const response = await fetch(`${backendUrl}/lzw`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: requestBody,
+                            });
+                            const data = await response.json();
+                            let formattedResult;
+                            if (mode === "encode") {
+                                formattedResult = data.result.replace(/,/g, " ");
+                            } else {
+                                formattedResult = data.result;
+                            }
+                            setResult(formattedResult);
+
+                            props.setHistory((prevHistory) => [
+                                ...prevHistory,
+                                { inputText, mode, algorithm: selectedAlgorithm, additional: "mtf", result: formattedResult },
+                            ]);
+                        } else if ((selectedAlgorithm === "RLE and LZW Algorithm" && inputText !== "" && (mode === "encode" || (mode === "decode" && (!/^[a-zA-Z]+$/.test(inputText)))))) {
+                            let parsedInputText;
+                            if (mode === "decode") {
+                                parsedInputText = inputText.split(" ").map(Number);
+                            } else {
+                                parsedInputText = inputText;
+                            }
+
+                            const requestBody = JSON.stringify({ text: parsedInputText, mode, algorithm: selectedAlgorithm, additional: "rle" });
+                            console.log(`Sending request with body:`, requestBody);
+                            const response = await fetch(`${backendUrl}/lzw`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: requestBody,
+                            });
+
+                            const data = await response.json();
+                            let formattedResult;
+                            if (mode === "encode") {
+                                formattedResult = data.result.replace(/,/g, " ");
+                            } else {
+                                formattedResult = data.result;
+                            }
+                            setResult(formattedResult);
+
+                            props.setHistory((prevHistory) => [
+                                ...prevHistory,
+                                { inputText, mode, algorithm: selectedAlgorithm, additional: "rle", result: formattedResult },
                             ]);
                         }
                         props.triggerFetchHistory();

@@ -12,6 +12,7 @@ export default function HistoryDetails(props) {
             <p>Input: {inputText}</p>
             <p>Mode: {selectedHistoryItem.mode}</p>
             <p>Algorithm: {selectedHistoryItem.algorithm}</p>
+            <p>Additional Info: {selectedHistoryItem.additional}</p>
             <p>Result: {selectedHistoryItem.result.replace(/,/g, " ")}</p>
         </div>
     );
