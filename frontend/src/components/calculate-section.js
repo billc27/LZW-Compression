@@ -10,7 +10,7 @@ export default function CalcSection(props) {
     const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
 
     return (
-        <div className="w-full bg-web-color p-4">
+        <div className="w-4/5 h-screen bg-web-color overflow-y-auto p-4">
             <p className="text-center mt-5">
                 <span className="bg-title-color text-black px-10 py-4 font-sans rounded-md" style={{ fontSize: "36px" }}>
                     LZW Compression Website
